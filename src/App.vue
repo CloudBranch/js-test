@@ -1,33 +1,41 @@
 <template>
-  <div id="app">
-    <router-link to="/" class="waves-effect waves-light btn z-depth-0"><i class="fas fa-store"></i> Store</router-link>
-    <router-link to="/cart" class="waves-effect waves-light btn z-depth-0"><i class="fas fa-shopping-cart"></i> Cart</router-link>
-    <router-view/>
-  </div>
+  <section id="app">
+    <topNav></topNav>
+    <sideNav></sideNav>
+    <mainArea></mainArea>
+  </section>
 </template>
 
 <script>
+import topNav from './components/topNav'
+import sideNav from './components/sideNav'
+import mainArea from './components/mainArea'
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    topNav,
+    sideNav,
+    mainArea
+  }
 }
 </script>
 
 <style>
 #app {
+  width: 100%;
+  height: 100%;
   font-family: 'Nunito', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #444543;
-  margin-top: 60px;
 }
 .btn {
+  color: #FFFFFF;
   background-color: #444543;
+  margin:.5rem;
 }
-.btn:hover {
-  background-color: #00447C;
-}
-.btn:focus {
-  background-color: #00447C;
+.btn:focus, .btn:hover {
+  color: #444543;
+  background-color: gold;
 }
 </style>

@@ -1,32 +1,33 @@
 <template>
-  <section class="cart">
-    <h2>Your Cart</h2>
-    <p v-show="!products.length"><i>Your cart is empty.</i></p>
-    <ul class="row">
-      <li v-for="(product) in products" :key="product.id" class="col">
+  <section>
+    <h1 v-show="products.length" class="title main-title"><i class="fas fa-shopping-cart"></i> Your Cart</h1>
+    <h1 v-show="!products.length" class="title main-title"><i>Your cart is empty.</i></h1>
+    <a v-show="!products.length" href="#"><img src="https://media.sweetwater.com/include/checkout/images/empty-cart.jpg"></a>
+    <ul class="flexbox">
+      <li v-for="(product, index) in products" :key="product.id" class="container colu">
         <a :href="product.url"><img :src="product.image"></a>
-        <h3>{{ product.productName }}</h3>
-        <h6>{{ product.description }}</h6>
-        <h6>{{ product.manufacturer }}</h6>
-        <h4>{{ product.title }}</h4>
-        <h5>{{ product.price | currency }}</h5>
-        <h6>Cart: <b>x {{ product.quantity }}</b></h6>
-        <h6>ID : <b>{{ product.itemid }}</b></h6>
+        <div>
+          <h3>{{ product.manufacturer }} -</h3>
+          <h3>{{ product.productName }} : ${{ product.price }}</h3>
+          <h6>{{ product.description }}</h6>
+          <h6><b>ID : {{ product.itemid }}</b></h6>
+          <h3>Cart: <b>x {{ product.quantity }}</b></h3>
+        </div>
         <button
           :disabled="!product.quantity"
-          @click="removeProductFromCart(product);"
-          class="waves-effect waves-light btn z-depth-0"
+          @click="removeProductFromCart(product, index);"
+          class="btn"
         >
           Remove from cart
         </button>
       </li>
     </ul>
-    <h3>Total: {{ total | currency }}</h3>
+    <h3>Total: ${{ total }}</h3>
     <p>
       <button
         :disabled="!products.length"
         @click="checkout(products);"
-        class="waves-effect waves-light btn z-depth-0"
+        class="btn"
       >
         Checkout
       </button>
@@ -52,40 +53,79 @@ export default {
     checkout (products) {
       this.$store.dispatch('cart/checkout', products)
     },
-    removeProductFromCart (product) {
+    removeProductFromCart (product, index) {
       this.$store.dispatch('cart/removeProductFromCart', product)
+      /* if (product.quantity <= 1) {
+        this.products.splice(index, product.id)
+      } */
     }
   }
 }
 </script>
 
 <style scoped>
-.row {
+.flexbox {
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  flex-flow: row wrap;
 }
-.col {
+.colu {
   flex: 1;
-  padding: 1em;
+  min-width: 33%;
+  max-width: 33%;
+}
+.container {
+  background-color: #FAFAFA;
+  border: 3px solid #FFFFFF;
+}
+button:disabled,
+button[disabled],
+button:disabled:hover,
+button[disabled]:hover,
+button:disabled:active,
+button[disabled]:active {
+  background-color: #999999;
+  color: #FFFFFF;
+}
+a img, h3 {
+  display: block;
+  margin: 1rem auto;
+}
+ul {
+  display: inline;
 }
 li {
-  border-top: 20px solid gold;
-  border-right: 2px solid gold;
-  border-bottom: 2px solid gold;
-  border-left: 2px solid gold;
-  margin: 1rem;
-  padding: 5rem;
-  display: inline-block !important;
+  padding: 1rem;
+  list-style-type: none;
   border-radius: 10px;
-  max-width: 25rem;
-  min-width: 25rem;
 }
 li:hover {
-  border-color: goldenrod;
+  border-color: #284266;
 }
 .btn {
-  background-color: gold;
+  border: 0;
+  background-color: #444543;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 1rem;
+  white-space: nowrap;
+  -ms-flex-item-align: end;
+  align-self: flex-end;
 }
 .btn:hover {
-  background-color: goldenrod;
+  color: #444543;
+  background-color: gold;
+}
+.title {
+  color: #666666;
+  text-align: center;
+}
+.main-title {
+  font-size: 3rem;
+}
+.sub-title {
+  font-size: 1.8rem;
 }
 </style>
